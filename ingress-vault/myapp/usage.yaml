@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foo-app
+  labels:
+    app: foo
+spec:
+  selector:
+    matchLabels:
+      app: foo      
+  replicas: 1
+  template:
+    metadata:      
+      labels:
+        app: foo
+    spec:
+      containers:
+      - name: foo-app
+        image: hashicorp/http-echo:0.2.3
+        args:
+        - "-text=myfoo"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: foo-svc
+spec:
+  selector:
+    app: foo
+  ports:
+  # Default port used by the image
+  - port: 5678
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bar-app
+  labels:
+    app: bar
+spec:
+  selector:
+    matchLabels:
+      app: bar
+  replicas: 1
+  template:
+    metadata:      
+      labels:
+        app: bar
+    spec:
+      containers:
+      - name: bar-app
+        image: hashicorp/http-echo:0.2.3
+        args:
+        - "-text=mybar"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: bar-svc
+spec:
+  selector:
+    app: bar
+  ports:
+  # Default port used by the image
+  - port: 5678
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myapp-ingress
+spec:
+  tls:
+  - hosts:
+    - dev.cams7-job.ml
+    secretName: dev.cams7-job.ml
+  rules:
+  - host: dev.cams7-job.ml
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/foo"
+        backend:
+          service:
+            name: foo-svc
+            port:
+              number: 5678
+      - pathType: Prefix
+        path: "/bar"
+        backend:
+          service:
+            name: bar-svc
+            port:
+              number: 5678
+---

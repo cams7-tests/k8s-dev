@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  haproxy:
+    image: haproxy:alpine3.14
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
+    container_name: haproxy
+    restart: always
+    volumes:
+      - /home/cmagalhaes/My/Desenv/K8s/Kind/test220228/haproxy:/usr/local/etc/haproxy:ro
+    ports:
+      - 80:80
+      - 443:443
+    extra_hosts:
+#      - "k8s.ingress.local:172.27.0.2"
+#      - "k8s.ingress.local:172.30.255.200"
+#      - "k8s.ingress.local:172.30.255.201"
+      - "k8s.ingress.local:172.31.255.200"
+    networks:
+#      - br220228
+      - kind
+networks:
+#  br220228:
+#    external: true
+  kind:
+    external: true
