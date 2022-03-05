@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api
+  name: api-deploy
+spec:
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+      - name: api
+        image: fabricioveronez/pedelogo-catalogo:1.0.0
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Always
+        env:
+          - name: Mongo__User
+            value: mongouser
+          - name: Mongo__Password
+            value: mongopwd
+          - name: Mongo__Host
+            value: mongodb-svc
+          - name: Mongo__Database
+            value: admin

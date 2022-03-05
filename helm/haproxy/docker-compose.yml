@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  haproxy:
+    image: haproxy:alpine3.14
+    sysctls:
+      - net.ipv4.ip_unprivileged_port_start=0
+    container_name: haproxy
+    restart: always
+    volumes:
+      - /home/cmagalhaes/My/Desenv/Youtube/FabricioVeronezKubeDev/helm/haproxy:/usr/local/etc/haproxy:ro
+    ports:
+      - 80:80
+      - 443:443
+    extra_hosts:
+      - "k8s.ingress.local:172.31.255.200"
+    networks:
+      - kind
+networks:
+  kind:
+    external: true

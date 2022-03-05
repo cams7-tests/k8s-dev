@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-ing
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - dev.cams7-job.ml
+    secretName: dev.cams7-job.ml
+  rules:
+  - host: dev.cams7-job.ml
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: api-svc
+            port:
+              number: 80
