@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-vault
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - vault.cams7-job.ml
+    secretName: vault.cams7-job.ml
+  rules:
+  - host: vault.cams7-job.ml
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: vault-ui
+            port:
+              number: 8200

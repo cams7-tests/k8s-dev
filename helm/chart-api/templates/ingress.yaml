@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ .Release.Name }}-api-ing
+  name: {{ .Release.Name }}-ing
 spec:
   ingressClassName: nginx
   tls:
@@ -20,7 +20,7 @@ spec:
         path: /
         backend:
           service:
-            name: {{ $.Release.Name }}-api-svc
+            name: {{ $.Release.Name }}-svc
             port:
               number: 80
   {{- end }}

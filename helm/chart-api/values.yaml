@@ -1,10 +1,10 @@
 mongodb:
-  tag: 4.2.8
   user: mongouser
   password: mongopwd
+  host: mymongo-svc
 api:
   image: fabricioveronez/pedelogo-catalogo:1.0.0
-  serviceType: ClusterIP
+  serviceType: ClusterIP  
   ingress:
     enabled: true
     hosts: ["dev.cams7-job.ml"]
